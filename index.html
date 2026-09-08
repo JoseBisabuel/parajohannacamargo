@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Un Detalle Especial para Johanna 💛</title>
+    <!-- Fuentes elegantes de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Estrellas centelleantes -->
+    <div class="stars" id="starsContainer"></div>
+
+    <!-- PANTALLA 1: Espera antes del 21 de Septiembre -->
+    <div class="waiting-container" id="waitingContainer">
+        <div class="lock-icon">🔒</div>
+        <h1 class="waiting-title">Un Secreto se está Cultivando</h1>
+        <p class="waiting-message" id="waitingMessage">"Cargando mensaje de amor..."</p>
+
+        <!-- Contador -->
+        <div class="countdown" id="countdown">
+            <div class="countdown-item">
+                <span class="countdown-number" id="days">00</span>
+                <span class="countdown-label">Días</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="hours">00</span>
+                <span class="countdown-label">Horas</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="minutes">00</span>
+                <span class="countdown-label">Min</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="seconds">00</span>
+                <span class="countdown-label">Seg</span>
+            </div>
+        </div>
+
+        <p class="release-date">Estará disponible el 21 de Septiembre de 2026 💛</p>
+    </div>
+
+    <!-- PANTALLA 2: Contraseña secreta (a partir del 21 de Septiembre) -->
+    <div class="password-container" id="passwordContainer">
+        <div class="lock-icon">🔐</div>
+        <h1 class="password-title">Ya Casi Es Tuyo</h1>
+        <p class="password-subtitle">Ingresa la contraseña secreta para abrir tu jardín 🌻</p>
+
+        <form class="password-form" id="passwordForm" autocomplete="off">
+            <input
+                type="password"
+                class="password-input"
+                id="passwordInput"
+                placeholder="Contraseña secreta"
+                autocomplete="off"
+                required
+            >
+            <button type="submit" class="password-submit">Desbloquear el Jardín 🌻</button>
+            <p class="password-error" id="passwordError">Contraseña incorrecta, inténtalo de nuevo 💛</p>
+        </form>
+    </div>
+
+    <!-- PANTALLA 3: Jardín de Flores Animadas -->
+    <div class="garden-container" id="gardenContainer">
+        <!-- Canvas para pétalos de flores cayendo en 2D -->
+        <canvas class="petals-canvas" id="petalsCanvas"></canvas>
+
+        <!-- Contenedor de flores que crecen -->
+        <div class="flower-bed" id="flowerBed"></div>
+
+        <!-- Sobre central que aparece al final -->
+        <div class="card-wrapper" id="cardWrapper">
+            <div class="envelope" id="envelope">
+                <div class="envelope-icon">📩</div>
+                <h3 class="envelope-title" id="envelopeTitle">Flores amarillas para ti</h3>
+                <p class="envelope-hint">Haz clic para abrir</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de la Carta Detallada -->
+    <div class="letter-modal" id="letterModal">
+        <div class="letter-content" id="letterContent">
+            <span class="close-letter" id="closeLetter">&times;</span>
+            <div class="decor-flower">🌻✨🌼</div>
+            <h2 class="letter-header">Para ti 💛</h2>
+            <p class="letter-body" id="letterBody">
+                Hoy es un día especial para regalar flores amarillas.
+                He creado este pequeño jardín digital que nunca se marchitará,
+                así como el inmenso cariño que te tengo.
+            </p>
+            <div class="decor-flower">🌼✨🌻</div>
+            <div class="letter-footer">Con mucho cariño...</div>
+        </div>
+    </div>
+
+    <!-- Música de fondo opcional (Instrumental romántica/bonita) -->
+    <button class="audio-control" id="audioBtn" title="Activar Música">
+        <span id="audioIcon">🎵</span>
+    </button>
+    <audio id="bgMusic" loop>
+        <source src="cancion/musica-fondo.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
