@@ -8,6 +8,9 @@ const SECRET_PASSWORD = "johannacamargo";
 // Clave de almacenamiento local para recordar que ya se desbloqueó una vez
 const UNLOCK_STORAGE_KEY = "jardinDesbloqueado";
 
+// Enlace de WhatsApp al que se dirige la respuesta a la propuesta
+const WHATSAPP_URL = "https://wa.me/573193034610";
+
 // Mensajes aleatorios para la pantalla de espera
 const WAITING_MESSAGES = [
     "Aún no es tiempo de tu detalle. 💛 No comas ansias.",
@@ -57,6 +60,9 @@ const audioIcon = document.getElementById("audioIcon");
 const passwordForm = document.getElementById("passwordForm");
 const passwordInput = document.getElementById("passwordInput");
 const passwordError = document.getElementById("passwordError");
+const proposalYes = document.getElementById("proposalYes");
+const proposalNo = document.getElementById("proposalNo");
+const noOverlay = document.getElementById("noOverlay");
 
 // Crear estrellas de fondo en el cielo
 function createStars() {
@@ -491,6 +497,18 @@ letterModal.addEventListener("click", (e) => {
     if (e.target === letterModal) {
         letterModal.classList.remove("show");
     }
+});
+
+// ==================== PROPUESTA (¿QUIERES SER MI NOVIA?) ====================
+proposalYes.addEventListener("click", () => {
+    window.location.href = WHATSAPP_URL;
+});
+
+proposalNo.addEventListener("click", () => {
+    noOverlay.classList.add("show");
+    setTimeout(() => {
+        window.location.href = WHATSAPP_URL;
+    }, 3000);
 });
 
 // ==================== LÓGICA DE AUDIO DE FONDO ====================
