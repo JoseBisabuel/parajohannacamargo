@@ -9,7 +9,12 @@ const SECRET_PASSWORD = "johannacamargo";
 const UNLOCK_STORAGE_KEY = "jardinDesbloqueado";
 
 // Enlace de WhatsApp al que se dirige la respuesta a la propuesta
-const WHATSAPP_URL = "https://wa.me/573193034610";
+const WHATSAPP_BASE_URL = "https://wa.me/573193034610";
+const WHATSAPP_MESSAGE = "Precioso mío, sí quiero ser tu novia. Este es mi bono para reclamar mi regalo. 💛🎁";
+
+function buildWhatsAppLink() {
+    return `${WHATSAPP_BASE_URL}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+}
 
 // Mensajes aleatorios para la pantalla de espera
 const WAITING_MESSAGES = [
@@ -32,6 +37,14 @@ const WAITING_MESSAGES = [
     "No importa cuántos kilómetros haya entre nosotros, mi cariño siempre encuentra la forma de llegar. 🌻",
     "Espero que este detalle llene tu día de luz y alegría. ✨",
     "Te mereces una sonrisa gigante... ¡te lo mereces todo! 💕",
+    "Cada girasol de este jardín está aprendiendo a girar hacia ti. 🌻",
+    "El 21 de septiembre este jardín florecerá solo para ti. 🌼",
+    "Estoy sembrando algo bonito, dame unos días más. ✨",
+    "Ni la distancia ni el tiempo hacen que pienses menos en mi cabeza. 💛",
+    "Aquí guardo un pedacito de cielo amarillo, esperando el momento justo. 🌸",
+    "Falta poco para que veas cuánto cariño le puse a esto. 💕",
+    "Este jardín crece despacito, como las cosas que valen la pena. 🌻",
+    "Un mensajito de aquí y de allá, para que sepas que te tengo presente. ✨",
 ];
 
 // Obtener parámetros de la URL para personalizar el nombre
@@ -63,6 +76,14 @@ const passwordError = document.getElementById("passwordError");
 const proposalYes = document.getElementById("proposalYes");
 const proposalNo = document.getElementById("proposalNo");
 const noOverlay = document.getElementById("noOverlay");
+const giftOverlay = document.getElementById("giftOverlay");
+const giftClaimBtn = document.getElementById("giftClaimBtn");
+const giftWaitingText = document.getElementById("giftWaitingText");
+const giftVoucherBtn = document.getElementById("giftVoucherBtn");
+const fairiesContainer = document.getElementById("fairiesContainer");
+const pageFairiesContainer = document.getElementById("pageFairiesContainer");
+const proposalIntro = document.getElementById("proposalIntro");
+const proposalQuestionWrap = document.getElementById("proposalQuestionWrap");
 
 // Crear estrellas de fondo en el cielo
 function createStars() {
@@ -91,6 +112,8 @@ function showWaitingScreen() {
     waitingContainer.style.display = "flex";
     passwordContainer.style.display = "none";
     gardenContainer.style.display = "none";
+    pageFairiesContainer.style.display = "block";
+    createPageFairies();
 
     const randomMsg = WAITING_MESSAGES[Math.floor(Math.random() * WAITING_MESSAGES.length)];
     waitingMessage.innerHTML = `"${randomMsg}"`;
@@ -111,6 +134,8 @@ function showPasswordScreen() {
     waitingContainer.style.display = "none";
     passwordContainer.style.display = "flex";
     gardenContainer.style.display = "none";
+    pageFairiesContainer.style.display = "block";
+    createPageFairies();
     passwordInput.value = "";
     passwordError.classList.remove("show");
     setTimeout(() => passwordInput.focus(), 300);
@@ -120,6 +145,7 @@ function showGarden() {
     waitingContainer.style.display = "none";
     passwordContainer.style.display = "none";
     gardenContainer.style.display = "block";
+    pageFairiesContainer.style.display = "none";
     startFlowerExperience();
 }
 
@@ -348,6 +374,9 @@ function startFlowerExperience() {
     // Iniciar animación del lienzo de pétalos flotantes
     initPetalsCanvas();
 
+    // Crear las hadas que revolotean sobre el jardín
+    createFairies();
+
     // Programar la aparición del sobre de carta central
     // Aparecerá mágicamente después de que la mayoría de las flores hayan florecido (aprox 5.5s)
     setTimeout(() => {
@@ -355,6 +384,85 @@ function startFlowerExperience() {
         createSparkles(window.innerWidth / 2, window.innerHeight / 2 - 50, 15);
     }, 5500);
 }
+
+// 5. Hada mágica (Fairy) con alas que se mueven
+function getFairySVG(glowColor = "#fef08a") {
+    return `
+    <svg class="fairy-svg" viewBox="0 0 60 60" width="100%" height="100%">
+        <!-- Ala izquierda -->
+        <ellipse class="wing wing-left" cx="18" cy="26" rx="13" ry="9" fill="${glowColor}" opacity="0.55"/>
+        <!-- Ala derecha -->
+        <ellipse class="wing wing-right" cx="42" cy="26" rx="13" ry="9" fill="${glowColor}" opacity="0.55"/>
+        <!-- Estela de luz -->
+        <circle cx="30" cy="30" r="16" fill="${glowColor}" opacity="0.08"/>
+        <!-- Cuerpo -->
+        <ellipse cx="30" cy="34" rx="3.2" ry="8" fill="#fffbeb"/>
+        <!-- Cabeza -->
+        <circle cx="30" cy="23" r="4.5" fill="#fffbeb"/>
+        <!-- Brillo del cuerpo -->
+        <circle cx="30" cy="30" r="2" fill="${glowColor}"/>
+    </svg>`;
+}
+
+// Poblar un contenedor con hadas revoloteando, proporcionales a su tamaño
+function spawnFairies(container, numFairies) {
+    if (!container || container.childElementCount > 0) return;
+
+    const glowColors = ["#fef08a", "#fde047", "#ffe9a3", "#fff4c2"];
+
+    for (let i = 0; i < numFairies; i++) {
+        const fairyDiv = document.createElement("div");
+        fairyDiv.className = "fairy";
+
+        // Tamaño pequeño y proporcional respecto a las flores (que usan 130x190px)
+        const size = Math.random() * 20 + 30; // Entre 30px y 50px
+        const startX = Math.random() * 90 + 2;
+        const startY = Math.random() * 55 + 10;
+        const floatX = (Math.random() - 0.5) * 160;
+        const floatY = (Math.random() - 0.5) * 120;
+        const floatDuration = Math.random() * 3 + 5; // 5s a 8s
+        const flapDuration = Math.random() * 0.15 + 0.22; // 0.22s a 0.37s
+        const delay = Math.random() * 3;
+
+        fairyDiv.style.left = `${startX}%`;
+        fairyDiv.style.top = `${startY}%`;
+        fairyDiv.style.width = `${size}px`;
+        fairyDiv.style.height = `${size}px`;
+        fairyDiv.style.setProperty("--float-x", `${floatX}px`);
+        fairyDiv.style.setProperty("--float-y", `${floatY}px`);
+        fairyDiv.style.setProperty("--float-duration", `${floatDuration}s`);
+        fairyDiv.style.setProperty("--flap-duration", `${flapDuration}s`);
+        fairyDiv.style.animationDelay = `${delay}s`;
+
+        const glow = glowColors[Math.floor(Math.random() * glowColors.length)];
+        fairyDiv.innerHTML = getFairySVG(glow);
+
+        container.appendChild(fairyDiv);
+    }
+}
+
+// Hadas del jardín de flores
+function createFairies() {
+    const numFairies = window.innerWidth < 600 ? 4 : 8;
+    spawnFairies(fairiesContainer, numFairies);
+}
+
+// Hadas de fondo para las pantallas de espera y contraseña (toda la página)
+function createPageFairies() {
+    const numFairies = window.innerWidth < 600 ? 5 : 10;
+    spawnFairies(pageFairiesContainer, numFairies);
+}
+
+// Rellenar las hadas pequeñas incrustadas junto a ciertos textos ("Para ti", "Con mucho cariño...")
+function populateInlineFairies() {
+    const glowColors = ["#fef08a", "#fde047", "#ffe9a3"];
+    document.querySelectorAll(".inline-fairy").forEach((el) => {
+        if (el.childElementCount > 0) return;
+        const glow = glowColors[Math.floor(Math.random() * glowColors.length)];
+        el.innerHTML = getFairySVG(glow);
+    });
+}
+populateInlineFairies();
 
 // Función para emitir partículas mágicas doradas
 function createSparkles(x, y, count = 6) {
@@ -476,6 +584,23 @@ function initPetalsCanvas() {
 }
 
 // ==================== INTERACCIONES DE LA CARTA / SOBRE ====================
+let proposalRevealTimer = null;
+
+// Muestra primero el mensaje introductorio y, 5 segundos después, la pregunta y los botones
+function revealProposalQuestion() {
+    proposalQuestionWrap.classList.remove("show");
+    if (proposalRevealTimer) clearTimeout(proposalRevealTimer);
+    proposalRevealTimer = setTimeout(() => {
+        proposalQuestionWrap.classList.add("show");
+    }, 5000);
+}
+
+function resetProposalQuestion() {
+    if (proposalRevealTimer) clearTimeout(proposalRevealTimer);
+    proposalRevealTimer = null;
+    proposalQuestionWrap.classList.remove("show");
+}
+
 // Abrir sobre
 envelope.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -484,31 +609,55 @@ envelope.addEventListener("click", (e) => {
     // Retraso muy leve para simular el impacto del clic
     setTimeout(() => {
         letterModal.classList.add("show");
+        revealProposalQuestion();
     }, 250);
 });
 
 // Cerrar carta
 closeLetter.addEventListener("click", () => {
     letterModal.classList.remove("show");
+    resetProposalQuestion();
 });
 
 // Cerrar carta al hacer clic fuera del papel
 letterModal.addEventListener("click", (e) => {
     if (e.target === letterModal) {
         letterModal.classList.remove("show");
+        resetProposalQuestion();
     }
 });
 
 // ==================== PROPUESTA (¿QUIERES SER MI NOVIA?) ====================
+function openGiftOverlay() {
+    letterModal.classList.remove("show");
+    giftOverlay.classList.add("show");
+}
+
 proposalYes.addEventListener("click", () => {
-    window.location.href = WHATSAPP_URL;
+    openGiftOverlay();
 });
 
 proposalNo.addEventListener("click", () => {
     noOverlay.classList.add("show");
     setTimeout(() => {
-        window.location.href = WHATSAPP_URL;
+        noOverlay.classList.remove("show");
+        openGiftOverlay();
     }, 3000);
+});
+
+// Al reclamar el regalo, esperar 10 segundos y revelar el bono que lleva a WhatsApp
+giftClaimBtn.addEventListener("click", () => {
+    giftClaimBtn.disabled = true;
+    giftClaimBtn.classList.add("hidden-btn");
+    giftWaitingText.classList.add("show");
+    createSparkles(window.innerWidth / 2, window.innerHeight / 2, 12);
+
+    setTimeout(() => {
+        giftWaitingText.classList.remove("show");
+        giftVoucherBtn.href = buildWhatsAppLink();
+        giftVoucherBtn.classList.add("show");
+        createSparkles(window.innerWidth / 2, window.innerHeight / 2, 18);
+    }, 10000);
 });
 
 // ==================== LÓGICA DE AUDIO DE FONDO ====================

@@ -15,14 +15,18 @@
     <!-- Estrellas centelleantes -->
     <div class="stars" id="starsContainer"></div>
 
+    <!-- Hadas que revolotean por toda la página (espera y contraseña) -->
+    <div class="fairies page-fairies" id="pageFairiesContainer"></div>
+
     <!-- PANTALLA 1: Espera antes del 21 de Septiembre -->
     <div class="waiting-container" id="waitingContainer">
-        <div class="lock-icon">🔒</div>
-        <h1 class="waiting-title">Un Secreto se está Cultivando</h1>
+        <div class="lock-icon">🔒<span class="inline-fairy" aria-hidden="true"></span></div>
+        <h1 class="waiting-title">Un Secreto se está Cultivando <span class="inline-fairy" aria-hidden="true"></span></h1>
         <p class="waiting-message" id="waitingMessage">"Cargando mensaje de amor..."</p>
 
         <!-- Contador -->
         <div class="countdown" id="countdown">
+            <span class="inline-fairy countdown-fairy" aria-hidden="true"></span>
             <div class="countdown-item">
                 <span class="countdown-number" id="days">00</span>
                 <span class="countdown-label">Días</span>
@@ -41,13 +45,13 @@
             </div>
         </div>
 
-        <p class="release-date">Estará disponible el 21 de Septiembre de 2026 💛</p>
+        <p class="release-date">Estará disponible el 21 de Septiembre de 2026 💛 <span class="inline-fairy" aria-hidden="true"></span></p>
     </div>
 
     <!-- PANTALLA 2: Contraseña secreta (a partir del 21 de Septiembre) -->
     <div class="password-container" id="passwordContainer">
-        <div class="lock-icon">🔐</div>
-        <h1 class="password-title">Ya Casi Es Tuyo</h1>
+        <div class="lock-icon">🔐<span class="inline-fairy" aria-hidden="true"></span></div>
+        <h1 class="password-title">Ya Casi Es Tuyo <span class="inline-fairy" aria-hidden="true"></span></h1>
         <p class="password-subtitle">Ingresa la contraseña secreta para abrir tu jardín 🌻</p>
 
         <form class="password-form" id="passwordForm" autocomplete="off">
@@ -72,6 +76,9 @@
         <!-- Contenedor de flores que crecen -->
         <div class="flower-bed" id="flowerBed"></div>
 
+        <!-- Hadas revoloteando por el jardín -->
+        <div class="fairies" id="fairiesContainer"></div>
+
         <!-- Sobre central que aparece al final -->
         <div class="card-wrapper" id="cardWrapper">
             <div class="envelope" id="envelope">
@@ -87,20 +94,23 @@
         <div class="letter-content" id="letterContent">
             <span class="close-letter" id="closeLetter">&times;</span>
             <div class="decor-flower">🌻✨🌼</div>
-            <h2 class="letter-header">Para ti 💛</h2>
+            <h2 class="letter-header">Para ti 💛 <span class="inline-fairy" aria-hidden="true"></span></h2>
             <p class="letter-body" id="letterBody">
                 Hoy es un día especial para regalar flores amarillas.
                 He creado este pequeño jardín digital que nunca se marchitará,
                 así como el inmenso cariño que te tengo.
             </p>
             <div class="decor-flower">🌼✨🌻</div>
-            <div class="letter-footer">Con mucho cariño...</div>
+            <div class="letter-footer">Con mucho cariño... <span class="inline-fairy" aria-hidden="true"></span></div>
 
             <div class="proposal">
-                <p class="proposal-question">¿Quieres ser mi novia?</p>
-                <div class="proposal-buttons">
-                    <button class="proposal-btn proposal-yes" id="proposalYes">Sí 💛</button>
-                    <button class="proposal-btn proposal-no" id="proposalNo">No</button>
+                <p class="proposal-intro" id="proposalIntro">Ahora, una pregunta importante... <span class="inline-fairy" aria-hidden="true"></span></p>
+                <div class="proposal-question-wrap" id="proposalQuestionWrap">
+                    <p class="proposal-question">¿Quieres ser mi novia?</p>
+                    <div class="proposal-buttons">
+                        <button class="proposal-btn proposal-yes" id="proposalYes">Sí 💛</button>
+                        <button class="proposal-btn proposal-no" id="proposalNo">No</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -109,6 +119,32 @@
     <!-- Overlay de respuesta "No" -->
     <div class="no-overlay" id="noOverlay">
         <p class="no-overlay-text">Esta opción no está disponible</p>
+    </div>
+
+    <!-- Overlay del Bono / Vale por un Regalo -->
+    <div class="gift-overlay" id="giftOverlay">
+        <div class="gift-card" id="giftCard">
+            <div class="gift-card-ribbon">🎁</div>
+            <h2 class="gift-card-title">Vale por un Regalo</h2>
+            <p class="gift-card-subtitle">Un detalle especial te está esperando...</p>
+            <div class="gift-card-divider">
+                <span class="gift-card-dot"></span>
+                <span class="gift-card-dashes"></span>
+                <span class="gift-card-dot"></span>
+            </div>
+            <p class="gift-card-note">Válido exclusivamente para: <strong>Johanna</strong> 💛</p>
+
+            <button class="gift-claim-btn" id="giftClaimBtn">Reclamar mi regalo 🎁</button>
+            <p class="gift-waiting-text" id="giftWaitingText">Preparando tu sorpresa...</p>
+
+            <a class="gift-voucher-btn" id="giftVoucherBtn" href="#" target="_blank" rel="noopener">
+                <span class="voucher-icon">🎟️</span>
+                <span class="voucher-label">
+                    <span class="voucher-title">Mi Bono</span>
+                    <span class="voucher-hint">Toca para reclamarlo</span>
+                </span>
+            </a>
+        </div>
     </div>
 
     <!-- Música de fondo opcional (Instrumental romántica/bonita) -->
